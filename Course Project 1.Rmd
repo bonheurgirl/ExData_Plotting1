@@ -1,0 +1,97 @@
+---
+title: "Course Project 1"
+author: "Anita Owens"
+date: "January 9, 2016"
+output: html_document
+---
+
+http://www.r-bloggers.com/using-r-common-errors-in-table-import/
+
+#handling date times in R
+http://biostat.mc.vanderbilt.edu/wiki/pub/Main/ColeBeck/datestimes.pdf
+
+```{r}
+getwd()
+setwd("/Users/anitaowens/Documents/ExData_Plotting1")
+```
+
+loading data
+```{r}
+library(zoo)
+library(xts)
+
+#test set
+abc <- read.table("test.txt", sep=";", na.strings="?", header=T, stringsAsFactors=FALSE)
+abc$Date<-as.Date(abc$Date, format="%d/%m/%Y")
+#abc$Time<-sub(".* ", "", abc$Time)
+#abc$Time<-strptime(abc$Time, format="%H:%M:%S")
+#abc$Time<-as.POSIXlt(abc$Time)
+str(abc)
+plot(abc$Date, abc$Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = " ")
+
+#don't run code
+def<-abc[ which(abc$Date>="2007-02-01" & abc$Date<="2007-02-02"),]
+plot(def$Date, def$Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = " ")
+axis.POSIXct(side=1, at=cut(def$Date, "days"), format="%d")
+
+#actual data
+hpc <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)
+hpc$Date<-as.Date(hpc$Date, format="%d/%m/%Y")
+hpc$Time<--sub(".* ", "", hpc$Time)
+str(hpc)
+#subsetting dates needed
+epc_data<-hpc[ which(hpc$Date>="2007-02-01" & hpc$Date<="2007-02-02"),]
+epc_data$Time<-strptime(epc_data$Time, format="%H:%M:%S")
+str(epc_data)
+```
+Plot #1
+
+```{r}
+hist(epc_data$Global_active_power,breaks=11, main="Global Active Power", col="red",  xlab="Global Active Power (kilowatts)")
+
+dev.copy(png, file="plot1.png",width=480,height=480)
+dev.off()
+
+```
+Plot #2
+ 
+
+combining date and time
+```{r}
+hpc_data <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)
+
+hpc_data$date_time=dmy_hms(paste(hpc_data$Date, hpc_data$Time))
+
+hpc_data$Date<-as.Date(hpc_data$Date, format="%d/%m/%Y")
+str(hpc_data)
+#subsetting
+hpc<-hpc_data[ which(hpc_data$Date>="2007-02-01" & hpc_data$Date<="2007-02-02"),]
+str(hpc)
+
+#plot
+plot(hpc$date_time, hpc$Global_active_power, type = "", ylab = "Global Active Power (kilowatts)", xlab = " ")
+
+```
+Plot 3
+```{r}
+plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylab = "Energy Submetering", xlab = " ")
+
+par(new = T)
+#with(hpc, plot(hpc$date_time, hpc$Sub_metering_2, type = "l", col="red"))
+plot(hpc$date_time, hpc$Sub_metering_2, type = "l", col="red", axes = F, xlab=" ", ylab = " ", xaxt='n')
+par(new = T)
+plot(hpc$date_time, hpc$Sub_metering_3, type = "l", col="blue", axes = F, xlab=" ", ylab = " ", xaxt='n')
+
+par(new = T)
+
+```
+
+example
+```{r}
+plot(6:25,rnorm(20),type="b",xlim=c(1,30),ylim=c(-2.5,2.5),col=2)
+par(new=T)
+plot(rnorm(30),type="b",axes=F,col=3)
+par(new=F)
+
+```
+
