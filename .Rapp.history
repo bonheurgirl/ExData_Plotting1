@@ -1,0 +1,67 @@
+available.packages()
+install.packages(c("slidify","ggplot2","devtools"))
+library(ggplot2)
+search()
+library(devtools)
+search()
+install.packages("KernSmooth")
+library(KernSmooth)
+x <-1
+print (x)
+x
+msg<-"hello"
+x <- ##incomplete expression
+x
+x<-5
+x
+print (x)
+x<-1:20
+x
+print (x)
+library(httr)
+oauth_endpoints("github")
+myapp<-oauth_app("github",  key = "3aebf8287d62d381f39a", secret = "fa76549cc15540ed26e316b2a207a3a06ec393ef")
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+gtoken <- config(token = github_token)#
+req <- GET("https://api.github.com/rate_limit", gtoken)#
+stop_for_status(req)#
+content(req)
+getwd()
+setwd("/Users/anitaowens/Documents/ExData_Plotting1")
+#loading library#
+library(lubridate)#
+#
+#reading data into table#
+hpc_data <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)#
+#
+#pasting date/times#
+hpc_data$date_time=dmy_hms(paste(hpc_data$Date, hpc_data$Time))#
+#
+#formatting date variable#
+hpc_data$Date<-as.Date(hpc_data$Date, format="%d/%m/%Y")#
+#
+#subsetting feb 1st and 2nd of 2007#
+hpc<-hpc_data[ which(hpc_data$Date>="2007-02-01" & hpc_data$Date<="2007-02-02"),]#
+#
+#4 graphs arranged in 2 rows and 2 columns#
+par(mfrow=c(2,2))#
+#
+#plot 1#
+plot(hpc$date_time, hpc$Global_active_power, type = "l", ylab = "Global Active Power", xlab = " ")#
+#
+#plot2--across#
+plot(hpc$date_time, hpc$Voltage, type = "l", ylab = "Voltage", xlab = "datetime")#
+#
+#plot 3--bottom#
+plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylim=c(0.0,38), ylab = "Energy Sub metering", xlab = " ")#
+par(new = T)#
+plot(hpc$date_time, hpc$Sub_metering_2, type = "l", ylim=c(0.0,38), col="red", axes = T, xlab=" ", ylab = "")#
+par(new = T)#
+plot(hpc$date_time, hpc$Sub_metering_3, type = "l", ylim=c(0.0,38), col="blue", axes = T, xlab=" ", ylab = " ")#
+legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1,1,1), lwd = c(1.5,1.5,1.5), col = c("black", "red", "blue"))#
+#
+#plot4--lower bottom right#
+plot(hpc$date_time, hpc$Global_reactive_power, type = "l", ylab = "Global_reactive_power", xlab = "datetime")#
+#
+dev.copy(png, file="plot4.png",width=480,height=480)#
+dev.off()

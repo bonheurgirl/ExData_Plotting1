@@ -58,6 +58,7 @@ Plot #2
 
 combining date and time
 ```{r}
+library(lubridate)
 hpc_data <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)
 
 hpc_data$date_time=dmy_hms(paste(hpc_data$Date, hpc_data$Time))
@@ -69,29 +70,69 @@ hpc<-hpc_data[ which(hpc_data$Date>="2007-02-01" & hpc_data$Date<="2007-02-02"),
 str(hpc)
 
 #plot
-plot(hpc$date_time, hpc$Global_active_power, type = "", ylab = "Global Active Power (kilowatts)", xlab = " ")
+plot(hpc$date_time, hpc$Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = " ")
 
+dev.copy(png, file="plot2.png",width=480,height=480)
+dev.off()
 ```
 Plot 3
 ```{r}
-plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylab = "Energy Submetering", xlab = " ")
+#first line
+plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylim=c(0.0,38), ylab = "Energy Submetering", xlab = " ")
 
+#2nd line
 par(new = T)
-#with(hpc, plot(hpc$date_time, hpc$Sub_metering_2, type = "l", col="red"))
-plot(hpc$date_time, hpc$Sub_metering_2, type = "l", col="red", axes = F, xlab=" ", ylab = " ", xaxt='n')
-par(new = T)
-plot(hpc$date_time, hpc$Sub_metering_3, type = "l", col="blue", axes = F, xlab=" ", ylab = " ", xaxt='n')
+plot(hpc$date_time, hpc$Sub_metering_2, type = "l", ylim=c(0.0,38), col="red", axes = T, xlab=" ", ylab = "")
 
+#3rd line
 par(new = T)
+plot(hpc$date_time, hpc$Sub_metering_3, type = "l", ylim=c(0.0,38), col="blue", axes = T, xlab=" ", ylab = " ")
+
+#legend-run in R not IDE
+legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1,1,1), lwd = c(1.5,1.5,1.5), col = c("black", "red", "blue"))
 
 ```
 
-example
+4th plot
 ```{r}
-plot(6:25,rnorm(20),type="b",xlim=c(1,30),ylim=c(-2.5,2.5),col=2)
-par(new=T)
-plot(rnorm(30),type="b",axes=F,col=3)
-par(new=F)
+#Dear fellow classmate:  I know that the 3rd graph is wrong.  I couldn't get it to work and I ran out of time so I understand that I will lose points for plot 4.
+#plot1-upper left
+#reading data into table
+hpc_data <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)
 
+#loading library
+library(lubridate)
+
+#pasting date/times
+hpc_data$date_time=dmy_hms(paste(hpc_data$Date, hpc_data$Time))
+
+#formatting date variable
+hpc_data$Date<-as.Date(hpc_data$Date, format="%d/%m/%Y")
+
+#subsetting
+hpc<-hpc_data[ which(hpc_data$Date>="2007-02-01" & hpc_data$Date<="2007-02-02"),]
+
+#4 graphs arranged in 2 rows and 2 columns
+par(mfrow=c(2,2))
+
+#plot 1
+plot(hpc$date_time, hpc$Global_active_power, type = "l", ylab = "Global Active Power", xlab = " ")
+
+#plot2--across
+plot(hpc$date_time, hpc$Voltage, type = "l", ylab = "Voltage", xlab = "datetime")
+
+#plot 3--bottom
+plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylim=c(0.0,38), ylab = "Energy Sub metering", xlab = " ")
+par(new = T)
+plot(hpc$date_time, hpc$Sub_metering_2, type = "l", ylim=c(0.0,38), col="red", axes = T, xlab=" ", ylab = "")
+par(new = T)
+plot(hpc$date_time, hpc$Sub_metering_3, type = "l", ylim=c(0.0,38), col="blue", axes = T, xlab=" ", ylab = " ")
+legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1,1,1), lwd = c(1.5,1.5,1.5), col = c("black", "red", "blue"))
+
+#plot4--lower bottom right
+plot(hpc$date_time, hpc$Global_reactive_power, type = "l", ylab = "Global_reactive_power", xlab = "datetime")
+
+dev.copy(png, file="plot4.png",width=480,height=480)
+dev.off()
 ```
 
