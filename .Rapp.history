@@ -65,3 +65,4 @@ plot(hpc$date_time, hpc$Global_reactive_power, type = "l", ylab = "Global_reacti
 #
 dev.copy(png, file="plot4.png",width=480,height=480)#
 dev.off()
+...

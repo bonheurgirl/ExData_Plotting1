@@ -20,13 +20,13 @@ par(mfrow=c(2,2))
 #plot 1
 plot(hpc$date_time, hpc$Global_active_power, type = "l", ylab = "Global Active Power", xlab = " ")
 
-#plot2--across
+#plot2--across--top right
 plot(hpc$date_time, hpc$Voltage, type = "l", ylab = "Voltage", xlab = "datetime")
 
-#plot 3--bottom
+#plot 3--bottom left
 plot(hpc$date_time, hpc$Sub_metering_1, type = "l", ylim=c(0.0,38), ylab = "Energy Sub metering", xlab = " ")
 par(new = T)
-plot(hpc$date_time, hpc$Sub_metering_2, type = "l", ylim=c(0.0,38), col="red", axes = T, xlab=" ", ylab = "")
+plot(hpc$date_time, hpc$Sub_metering_2, type = "l", ylim=c(0.0,38), col="red", axes = T, xlab=" ", ylab = " ")
 par(new = T)
 plot(hpc$date_time, hpc$Sub_metering_3, type = "l", ylim=c(0.0,38), col="blue", axes = T, xlab=" ", ylab = " ")
 legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = c(1,1,1), lwd = c(1.5,1.5,1.5), col = c("black", "red", "blue"))
@@ -34,5 +34,5 @@ legend(x="topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lt
 #plot4--lower bottom right
 plot(hpc$date_time, hpc$Global_reactive_power, type = "l", ylab = "Global_reactive_power", xlab = "datetime")
 
-dev.copy(png, file="plot4.png",width=480,height=480)
+dev.copy(png, file="test4.png",width=480,height=480)
 dev.off()

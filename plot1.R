@@ -1,3 +1,13 @@
+setwd("/Users/anitaowens/Documents/ExData_Plotting1")
+
+#download and unzip from website
+file.url<-'https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip'
+download.file(file.url,destfile='./household_power_consumption.zip')
+unzip('./household_power_consumption.zip',overwrite=TRUE)
+
+#load library
+library(data.table)
+
 #read data
 hpc <- read.table("household_power_consumption.txt", sep=";",na.strings="?", header=T,  stringsAsFactors=FALSE)
 hpc$Date<-as.Date(hpc$Date, format="%d/%m/%Y")
